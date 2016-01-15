@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="MusicFlow.NowPlaying"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicFlow"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <SplitView x:Name="MySplitView"
+            DisplayMode="Overlay">
+
+            <SplitView.Pane>
+                <StackPanel Margin="10,50,0,0">
+                    <CheckBox
+                        x:Name="NearSlideCheckBox"
+                        Click="NearSlideCheckBox_Click"
+                        Content="Near Slide"
+                        IsChecked="True"/>
+
+                    <CheckBox
+                        x:Name="FarSlideCheckBox"
+                        Click="FarSlideCheckBox_Click"
+                        Content="Far Slide"
+                        IsChecked="True"/>
+
+                    <CheckBox
+                        x:Name="FlashlightCheckBox"
+                        Click="FlashlightCheckBox_Click"
+                        Content="Flashlight"
+                        IsChecked="True"
+                        Margin="20,0,0,0"/>
+
+                    <CheckBox
+                        x:Name="ZoomCheckBox"
+                        Click="ZoomCheckBox_Click"
+                        Content="Zoom"
+                        IsChecked="True"/>
+
+                    <CheckBox
+                        x:Name="StackCheckBox"
+                        Click="StackCheckBox_Click"
+                        Content="Stack / Unstack"
+                        IsChecked="True"/>
+                </StackPanel>
+            </SplitView.Pane>
+
+            <SplitView.Content>
+                <Frame>
+                    <Grid>
+                        <Grid Name="PictureHost" Background="Black" SizeChanged="PictureHost_SizeChanged" Unloaded="PictureHost_Unloaded"/>
+                        <Grid Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <RelativePanel VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+                                <Image Name="Cover" Source="{Binding Cover, Source={StaticResource ViewModel}}"  MaxWidth="300" MinWidth="150" HorizontalAlignment="Stretch" Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}" Stretch="Uniform" Margin="60"/>
+                                <StackPanel RelativePanel.RightOf="Cover" Orientation="Vertical" Margin="0,60,0,0" >
+                                    <TextBlock Text="{Binding Title, Source={StaticResource ViewModel}}" RequestedTheme="Light" FontSize="40"/>
+                                    <TextBlock Text="{Binding Artist, Source={StaticResource ViewModel}}" RequestedTheme="Light" FontSize="40"/>
+                                    <TextBlock Text="{Binding Album, Source={StaticResource ViewModel}}" RequestedTheme="Light" FontSize="40"/>
+                                </StackPanel>
+                            </RelativePanel>
+                        </Grid>
+                    </Grid>
+                   
+                </Frame>
+            </SplitView.Content>
+        </SplitView>
+
+        
+    </Grid>
+</Page>

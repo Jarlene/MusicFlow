@@ -1,0 +1,115 @@
+﻿<Page
+    x:Class="MusicFlow.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicFlow"
+    xmlns:c="using:MusicFlow"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+
+        <Storyboard x:Name="HidePlayer">
+            <DoubleAnimation Duration="0:0:0.3" To="72" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="PlayerSP" d:IsOptimized="True">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="ShowPlayer">
+            <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="PlayerSP" d:IsOptimized="True">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="NowPlayingFlip" AutoReverse="True">
+            <DoubleAnimation Duration="0:0:0.5" To="-70"  Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="NowPlatingCover" d:IsOptimized="True" EnableDependentAnimation="True">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseIn" Amplitude="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="NowPlayingFlip2" AutoReverse="True">
+            <DoubleAnimation Duration="0:0:0.4" To="-90" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="NowPlayingSP" d:IsOptimized="True" EnableDependentAnimation="True">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseIn" Amplitude="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Desktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="Phone">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ProgressBarGrid.Visibility" Value="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ContentControl Content="{Binding MediaElementObject}"/>
+        <Frame Name="MainFrame" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" />
+
+        <ProgressBar Name="ProgressbarMain" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="10" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" Background="Transparent" />
+
+
+        <Grid Visibility="Visible" Height="112" Margin="0,0,0,-40" Name="PlayerSP" PointerReleased="StackPanel_PointerReleased" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="72"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.RenderTransform>
+                <CompositeTransform/>
+            </Grid.RenderTransform>
+
+            <Rectangle Fill="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2" Grid.ColumnSpan="4" Opacity=".9"/>
+            <StackPanel Orientation="Horizontal">
+                <Image Name="NowPlatingCover" Width="64" Height="64"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,04,0,04"  >
+                    <Image.Projection>
+                        <PlaneProjection/>
+                    </Image.Projection>
+                </Image>
+                <StackPanel Name="NowPlayingSP" Grid.Column="1" Orientation="Vertical" Margin="8,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250">
+                    <StackPanel.Projection>
+                        <PlaneProjection/>
+                    </StackPanel.Projection>
+                    <TextBlock  Name="NowPlayingTitle"  Margin="0,12,0,0"   />
+                    <TextBlock Name="NowPlayingArtist" Margin="0,4,0,0"  />
+                </StackPanel>
+            </StackPanel>
+            <Grid Name="ProgressBarGrid" Grid.Column="2" HorizontalAlignment="Stretch" Margin="20,0,20,0">
+                <ProgressBar x:Name="progressBar" Value="{Binding Position.TotalMilliseconds, ElementName=MusicFlowME, Mode=TwoWay}" Maximum="{Binding NaturalDuration.TimeSpan.TotalMilliseconds, ElementName=MusicFlowME, Mode=OneWay}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" Background="#99FFFFFF"/>
+            </Grid>
+            <Grid Visibility="Visible" Grid.Column="3" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,40,0">
+                <StackPanel Orientation="Horizontal">
+                    <AppBarButton Name="Previous"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Previous" Click="Previous_Click"/>
+                    <AppBarButton Name="Pause"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Play" Click="Pause_Click"/>
+                    <AppBarButton Name="Next"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Next" Click="Next_Click"/>
+                    <AppBarButton Name="Refresh"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Refresh" Click="Refresh_Click"/>
+                </StackPanel>
+            </Grid>
+            
+            <MediaElement x:Name="MusicFlowME"  x:FieldModifier="Public" AudioCategory="BackgroundCapableMedia" CompositeMode="MinBlend" />
+
+        </Grid>
+
+    </Grid>
+</Page>
