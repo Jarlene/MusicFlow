@@ -20,6 +20,8 @@ using Windows.Storage;
 using Windows.UI.ViewManagement;
 using BackgroundAudioShared;
 using BackgroundAudioShared.Messages;
+using Lumia.Imaging.Artistic;
+using Lumia.Imaging.Adjustments;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,7 +39,7 @@ namespace MusicFlow
         string AlbumArtist;
         string Year;
         string Genre;
-
+        Lumia.Imaging.Artistic.GrayscaleNegativeEffect ef = new GrayscaleNegativeEffect( );
 
         public AlbumDetail()
         {
@@ -49,6 +51,9 @@ namespace MusicFlow
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
+
+
             songs = (ObservableCollection<Song>)e.Parameter; ;
             Cover = songs[0].AlbumCover;
             
@@ -100,6 +105,24 @@ namespace MusicFlow
             MessageService.SendMessageToBackground(new AddToPlaylistMessage(song1));
             
         }
+
+        private void Grid_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            var g = sender as Grid;
+            var rp =  g.Children[1] as RelativePanel;
+            var b = rp.Children[2] as Button;
+            b.Visibility = Visibility.Collapsed;
+        }
+
+        private void Grid_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            var g = sender as Grid;
+            var rp = g.Children[1] as RelativePanel;
+            var b = rp.Children[2] as Button;
+            b.Visibility = Visibility.Visible;
+        }
+
+        
     }
 
     

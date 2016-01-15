@@ -54,6 +54,10 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ProgressBarGrid.Visibility" Value="Collapsed"/>
+                        <Setter Target="Previous.Visibility" Value="Collapsed"/>
+                        <Setter Target="Next.Visibility" Value="Collapsed"/>
+                        <Setter Target="Refresh.Visibility" Value="Collapsed"/>
+                        
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -82,7 +86,7 @@
 
             <Rectangle Fill="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2" Grid.ColumnSpan="4" Opacity=".9"/>
             <StackPanel Orientation="Horizontal">
-                <Image Name="NowPlatingCover" Width="64" Height="64"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,04,0,04"  >
+                <Image Name="NowPlatingCover" Width="64" Height="64"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="04,04,0,04"  >
                     <Image.Projection>
                         <PlaneProjection/>
                     </Image.Projection>
@@ -96,7 +100,7 @@
                 </StackPanel>
             </StackPanel>
             <Grid Name="ProgressBarGrid" Grid.Column="2" HorizontalAlignment="Stretch" Margin="20,0,20,0">
-                <ProgressBar x:Name="progressBar" Value="{Binding Position.TotalMilliseconds, ElementName=MusicFlowME, Mode=TwoWay}" Maximum="{Binding NaturalDuration.TimeSpan.TotalMilliseconds, ElementName=MusicFlowME, Mode=OneWay}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" Background="#99FFFFFF"/>
+                <ProgressBar x:Name="progressBar" Value="{Binding Position.TotalMilliseconds, ElementName=CurrentPlayer, Mode=TwoWay}" Maximum="{Binding NaturalDuration.TotalMilliseconds, ElementName=CurrentPlayer, Mode=OneWay}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" Background="#99FFFFFF"/>
             </Grid>
             <Grid Visibility="Visible" Grid.Column="3" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,40,0">
                 <StackPanel Orientation="Horizontal">

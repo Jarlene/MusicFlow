@@ -680,6 +680,7 @@ namespace MusicFlow
         private void Previous_Click(object sender, RoutedEventArgs e)
         {
             MessageService.SendMessageToBackground(new SkipPreviousMessage());
+           
         }
     }
 }

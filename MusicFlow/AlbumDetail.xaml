@@ -27,6 +27,8 @@
                         </Setter>
                         <Setter Target="ListView.Visibility" Value="Visible"/>
                         <Setter Target="gridView.Visibility" Value="Collapsed"/>
+                        <Setter Target="AlbumInfo.Margin" Value="8,12,12,0"/>
+                        <Setter Target="image.Margin" Value="8,20,8,0"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -35,11 +37,11 @@
             </VisualStateGroup>
 
         </VisualStateManager.VisualStateGroups>
-
+        
         <ScrollViewer x:Name="scrollViewer" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalAlignment="Stretch">
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,72" HorizontalAlignment="Stretch">
-                <Grid Name="AlbumInfo" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Margin="40,20,0,20">
+                <Grid  Name="AlbumInfo" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Margin="40,20,0,20">
                     <Grid.ChildrenTransitions>
                         <TransitionCollection>
                             <EntranceThemeTransition IsStaggeringEnabled="True" />
@@ -83,20 +85,21 @@
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="local:Song">
-                            <Grid Width="440" >
+                            <Grid Width="440" PointerExited="Grid_PointerExited" PointerEntered="Grid_PointerEntered" Height="28">
+                                <Rectangle Fill="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                                 <RelativePanel Name="rp1">
-                                    <TextBlock Name="TB1" Text="{x:Bind TrackNo}" VerticalAlignment="Center" Margin="8,0,0,0" RelativePanel.AlignLeftWithPanel="True"/>
-                                    <TextBlock Text="{x:Bind Title}" VerticalAlignment="Center" Margin="12,0,0,0" MaxWidth="220" RelativePanel.RightOf="TB1" />
-                                    <TextBlock Text="{x:Bind Artist}"  Margin="12,0,40,0" RelativePanel.LeftOf="TB4" MaxWidth="150"/>
-                                    <TextBlock  Name="TB4" Text="{x:Bind Length}"  Margin="8,0,8,0" RelativePanel.AlignRightWithPanel="True"/>
+                                    <TextBlock Name="TB1" Text="{x:Bind TrackNo}" VerticalAlignment="Center" Margin="8,0,0,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                                    <TextBlock Name="TB2" Text="{x:Bind Title}" VerticalAlignment="Center" Margin="12,0,0,0" MaxWidth="220" RelativePanel.RightOf="TB1" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                                    <Button Name="AddTo" Content="+"  Click="Button_Click" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Center" RelativePanel.RightOf="TB2" Margin="12,0,8,0" RelativePanel.AlignVerticalCenterWithPanel="True" Background="Transparent"/>
+                                    <TextBlock Name="TB3" Text="{x:Bind Artist}"  Margin="12,0,40,0" RelativePanel.LeftOf="TB4" MaxWidth="150" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                                    <TextBlock  Name="TB4" Text="{x:Bind Length}"  Margin="8,0,8,0" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
                                 </RelativePanel>
-                                <Button Content="+" Width="24" Height="24" Click="Button_Click" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
 
-                <ListView Visibility="Collapsed" x:Name="ListView" ScrollViewer.VerticalScrollMode="Disabled" MinHeight="200" ItemsSource="{x:Bind songs}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="40,40,40,40" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                <ListView Visibility="Collapsed" x:Name="ListView" ScrollViewer.VerticalScrollMode="Disabled" MinHeight="200" ItemsSource="{x:Bind songs}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,40,0,40" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
                     <ListView.Transitions>
                         <TransitionCollection>
                             <EntranceThemeTransition />
@@ -118,13 +121,13 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:Song">
-                            <Grid  >
+                            <Grid>
                                 <RelativePanel Name="rp1">
                                     <TextBlock Name="TB1" Text="{x:Bind TrackNo}" VerticalAlignment="Center" Margin="12,0,0,0" RelativePanel.AlignLeftWithPanel="True"/>
-                                    <TextBlock Text="{x:Bind Title}" VerticalAlignment="Center" Margin="12,0,0,0" MaxWidth="220" RelativePanel.RightOf="TB1" />
-                                    <TextBlock Text="{x:Bind Artist}"  Margin="12,0,12,0"  MaxWidth="150" RelativePanel.AlignRightWithPanel="True"/>
-                                   
-                                </RelativePanel>
+                                    <TextBlock  Name="TB2" Text="{x:Bind Title}" VerticalAlignment="Center" Margin="12,0,0,0" MaxWidth="220" RelativePanel.RightOf="TB1" />
+                                    <Button Name="AddTo" Content="+"  Click="Button_Click" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Center" RelativePanel.RightOf="TB2" Margin="12,0,8,0" RelativePanel.AlignVerticalCenterWithPanel="True" Background="Transparent"/>
+                                    <TextBlock  Name="TB3" Text="{x:Bind Artist}"  Margin="12,0,12,0"  MaxWidth="150" RelativePanel.AlignRightWithPanel="True"/>
+                               </RelativePanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
