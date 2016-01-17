@@ -7,16 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
-        <Style TargetType="GridViewItem" x:Key="LargeItem">
-            <Setter Property="Margin" Value="8"/>
-            <Setter Property="Height" Value="200"/>
-            <Setter Property="Width" Value="200"/>
-        </Style>
-        <Style TargetType="GridViewItem" x:Key="SmallItem">
-            <Setter Property="Margin" Value="4"/>
-            <Setter Property="Height" Value="150"/>
-            <Setter Property="Width" Value="150"/>
-        </Style>
+        
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,15 +15,17 @@
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="Desktop">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720"/>
+                        <AdaptiveTrigger MinWindowWidth="580"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="albumView.ItemContainerStyle" Value="{StaticResource LargeItem}"/>
+                        <Setter Target="AlbumListView.Visibility" Value="Collapsed"/>
+                        <Setter Target="albumView.Visibility" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="Phone">
                     <VisualState.Setters>
-                        <Setter Target="albumView.ItemContainerStyle" Value="{StaticResource SmallItem}"/>
+                        <Setter Target="AlbumListView.Visibility" Value="Visible"/>
+                        <Setter Target="albumView.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -41,15 +34,16 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-
         <ScrollViewer  Name="SC" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto">
             
-            <GridView  Name="albumView" ItemsSource="{x:Bind albumList}" ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None"  IsItemClickEnabled="True" ItemClick="albumView_ItemClick" Margin="12,12,12,72" >
-                <GridView.Transitions>
-                    <TransitionCollection>
-                        <EntranceThemeTransition IsStaggeringEnabled="True"/>
-                    </TransitionCollection>
-                </GridView.Transitions>
+            <StackPanel>
+                
+                <GridView  Visibility="Visible" Name="albumView" ItemsSource="{x:Bind albumList}" ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None"  IsItemClickEnabled="True" ItemClick="albumView_ItemClick" Margin="12,12,12,72" >
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="8"/>
+                        </Style>
+                    </GridView.ItemContainerStyle>
                 <GridView.Header>
                     <TextBlock Text="Albums" FontSize="36" Margin="12,0,0,12"/>
                 </GridView.Header>
@@ -58,10 +52,11 @@
                         <EntranceThemeTransition IsStaggeringEnabled="True"/>
                     </TransitionCollection>
                 </GridView.ItemContainerTransitions>
+                   
 
                 <GridView.ItemTemplate >
-                    <DataTemplate x:DataType="local:Song" x:Name="DT">
-                        <Grid Name="albumgrid" >
+                    <DataTemplate x:DataType="local:Song" >
+                        <Grid Name="albumgrid" Height="200" Width="200">
                             <Image Source="{x:Bind AlbumCover}" HorizontalAlignment="Center" VerticalAlignment="Center"  Stretch="Uniform"/>
                             <StackPanel VerticalAlignment="Bottom" Background="#66000000">
                                 <TextBlock Text="{x:Bind Album}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4"/>
@@ -70,6 +65,36 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
+                
+                <ListView Visibility="Collapsed" Name="AlbumListView" ItemsSource="{x:Bind albumList}" ScrollViewer.VerticalScrollMode="Disabled" SelectionMode="None"  IsItemClickEnabled="True" ItemClick="albumView_ItemClick" Margin="0,12,0,72" >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="0,0,0,8"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.Header>
+                        <TextBlock Text="Albums" FontSize="36" Margin="12,0,0,12"/>
+                    </ListView.Header>
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate >
+                    <DataTemplate x:DataType="local:Song">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Source="{x:Bind AlbumCover}" Height="100" Width="100" VerticalAlignment="Center"  Stretch="Uniform"/>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,8,0,0">
+                                <TextBlock Text="{x:Bind Album}" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4"/>
+                                <TextBlock Text="{x:Bind Artist}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="4,0,0,4"/>
+                             </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            </StackPanel>
+            
         </ScrollViewer>
     </Grid>
 </Page>

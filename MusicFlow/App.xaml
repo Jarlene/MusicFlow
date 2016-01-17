@@ -6,5 +6,6 @@
     RequestedTheme="Dark">
     <Application.Resources>
         <local:ViewModel x:Key="ViewModel"/>
+        
     </Application.Resources>
 </Application>

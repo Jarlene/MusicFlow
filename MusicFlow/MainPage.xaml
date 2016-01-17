@@ -57,7 +57,7 @@
                         <Setter Target="Previous.Visibility" Value="Collapsed"/>
                         <Setter Target="Next.Visibility" Value="Collapsed"/>
                         <Setter Target="Refresh.Visibility" Value="Collapsed"/>
-                        
+
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -69,8 +69,9 @@
         <ProgressBar Name="ProgressbarMain" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="10" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" Background="Transparent" />
 
 
-        <Grid Visibility="Visible" Height="112" Margin="0,0,0,-40" Name="PlayerSP" PointerReleased="StackPanel_PointerReleased" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5"  >
+        <Grid Visibility="Visible" Height="112" Margin="0,0,0,-40" Name="PlayerSP"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5"  >
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -84,34 +85,38 @@
                 <CompositeTransform/>
             </Grid.RenderTransform>
 
-            <Rectangle Fill="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2" Grid.ColumnSpan="4" Opacity=".9"/>
-            <StackPanel Orientation="Horizontal">
-                <Image Name="NowPlatingCover" Width="64" Height="64"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="04,04,0,04"  >
-                    <Image.Projection>
-                        <PlaneProjection/>
-                    </Image.Projection>
-                </Image>
-                <StackPanel Name="NowPlayingSP" Grid.Column="1" Orientation="Vertical" Margin="8,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250">
-                    <StackPanel.Projection>
-                        <PlaneProjection/>
-                    </StackPanel.Projection>
-                    <TextBlock  Name="NowPlayingTitle"  Margin="0,12,0,0"   />
-                    <TextBlock Name="NowPlayingArtist" Margin="0,4,0,0"  />
-                </StackPanel>
+            <Rectangle Fill="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2" Grid.ColumnSpan="5" Opacity=".9"/>
+            
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <AppBarButton Icon="ShowBcc" Click="AppBarButton_Click" ToolTipService.ToolTip="Playlist"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
-            <Grid Name="ProgressBarGrid" Grid.Column="2" HorizontalAlignment="Stretch" Margin="20,0,20,0">
+            <Grid Name="ProgressBarGrid" Grid.Column="3" HorizontalAlignment="Stretch" Margin="20,0,20,0">
                 <ProgressBar x:Name="progressBar" Value="{Binding Position.TotalMilliseconds, ElementName=CurrentPlayer, Mode=TwoWay}" Maximum="{Binding NaturalDuration.TotalMilliseconds, ElementName=CurrentPlayer, Mode=OneWay}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" Background="#99FFFFFF"/>
             </Grid>
-            <Grid Visibility="Visible" Grid.Column="3" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,40,0">
+            <Grid Visibility="Visible" Grid.Column="4" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="0,0,40,0">
                 <StackPanel Orientation="Horizontal">
-                    <AppBarButton Name="Previous"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Previous" Click="Previous_Click"/>
-                    <AppBarButton Name="Pause"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Play" Click="Pause_Click"/>
-                    <AppBarButton Name="Next"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Next" Click="Next_Click"/>
-                    <AppBarButton Name="Refresh"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Refresh" Click="Refresh_Click"/>
+                    <AppBarButton Name="Previous"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Previous" Click="Previous_Click" ToolTipService.ToolTip="Previous"/>
+                    <AppBarButton Name="Pause"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Play" Click="Pause_Click" ToolTipService.ToolTip="Play"/>
+                    <AppBarButton Name="Next"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Next" Click="Next_Click" ToolTipService.ToolTip="Next"/>
+                    <AppBarButton Name="Refresh"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Refresh" Click="Refresh_Click" ToolTipService.ToolTip="Refresh"/>
                 </StackPanel>
             </Grid>
-            
-            <MediaElement x:Name="MusicFlowME"  x:FieldModifier="Public" AudioCategory="BackgroundCapableMedia" CompositeMode="MinBlend" />
+            <AppBarButton Width="300" VerticalAlignment="Stretch" Click="AppBarButton_Click_1">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Margin="0,-14,0,-38">
+                    <Image Name="NowPlatingCover" Width="64" Height="64"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="04,04,0,04"  >
+                        <Image.Projection>
+                            <PlaneProjection/>
+                        </Image.Projection>
+                    </Image>
+                    <StackPanel Name="NowPlayingSP" Grid.Column="1" Orientation="Vertical" Margin="8,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250">
+                        <StackPanel.Projection>
+                            <PlaneProjection/>
+                        </StackPanel.Projection>
+                        <TextBlock  Name="NowPlayingTitle"  Margin="0,12,0,0"   />
+                        <TextBlock Name="NowPlayingArtist" Margin="0,4,0,0"  />
+                    </StackPanel>
+                </StackPanel>
+            </AppBarButton>
 
         </Grid>
 

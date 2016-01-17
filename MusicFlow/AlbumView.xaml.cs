@@ -38,7 +38,7 @@ namespace MusicFlow
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             myMusic = (Music)e.Parameter;
-            albumList = myMusic.albumList;
+            albumList = new ObservableCollection<Song>(from i in myMusic.albumList orderby i.Album select i);
             try
             {
                 SC.ScrollToVerticalOffset(scposition);

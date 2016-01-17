@@ -12,7 +12,7 @@
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="Desktop">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720"/>
+                        <AdaptiveTrigger MinWindowWidth="580"/>
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="Phone">

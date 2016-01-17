@@ -28,14 +28,13 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using MusicFlow.View;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace MusicFlow
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+    
     public sealed partial class MainPage : Page
     {
         ObservableCollection<SongModel> songs = new ObservableCollection<SongModel>();
@@ -74,11 +73,7 @@ namespace MusicFlow
             titlebar.ButtonInactiveForegroundColor = white;
             titlebar.ButtonHoverForegroundColor = grey;
             titlebar.ButtonHoverBackgroundColor = black;
-
-            ((ViewModel)Application.Current.Resources["ViewModel"]).Title = "MusicFlow";
-            ((ViewModel)Application.Current.Resources["ViewModel"]).Cover = "ms-appx:///Assets/main.png";
-            ((ViewModel)Application.Current.Resources["ViewModel"]).Album = "For Windows 10";
-            ((ViewModel)Application.Current.Resources["ViewModel"]).PropertyChanged += new PropertyChangedEventHandler(ViewModel_prpChanged);
+            
             SystemNavigationManager.GetForCurrentView().BackRequested += (s, e) =>
             {
                 
@@ -106,23 +101,9 @@ namespace MusicFlow
                         break;
                 }
             };
-            MusicFlowME.MediaEnded += NowPlayingSong_MediaEnded;
+           
         }
-
-        private void NowPlayingSong_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            Pause.Icon = new SymbolIcon(Symbol.Play);
-        }
-
-        private void ViewModel_prpChanged(object sender, PropertyChangedEventArgs e)
-        {
-            NowPlayingFlip.Stop();
-            NowPlayingFlip2.Stop();
-            NowPlayingFlip.Begin();
-            NowPlayingFlip2.Begin();
-            Pause.Icon = new SymbolIcon(Symbol.Pause);
-        }
-
+        
         
         public async Task GetMusic()
         {
@@ -131,7 +112,6 @@ namespace MusicFlow
             await initCollection(folder,songfilelist);
             myMusic = await createSongList(songfilelist);
             await serialize(myMusic);
-            
         }
 
         private async Task initCollection(StorageFolder folder,ObservableCollection<StorageFile>songfilelist)
@@ -220,6 +200,11 @@ namespace MusicFlow
             Application.Current.Suspending += ForegroundApp_Suspending;
             Application.Current.Resuming += ForegroundApp_Resuming;
             ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.AppState, AppState.Active.ToString());
+
+            NowPlatingCover.Source = new BitmapImage(new Uri("ms-appx:///Assets/main.png"));
+            NowPlayingTitle.Text = "MusicFlow";
+            NowPlayingArtist.Text = "For Windows 10";
+          
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -231,12 +216,6 @@ namespace MusicFlow
             }
 
             base.OnNavigatedFrom(e);
-        }
-
-        private void StackPanel_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            MainFrame.Navigate(typeof(NowPlaying));
-            HidePlayer.Begin();
         }
 
         private async Task serialize(Music mymusic)
@@ -279,34 +258,54 @@ namespace MusicFlow
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
-            if (songs.Count == 0)
-            {
+            //if (songs.Count == 0)
+            //{
 
-            }
-            // Start the background task if it wasn't running
-            else if (!IsMyBackgroundTaskRunning || MediaPlayerState.Closed == CurrentPlayer.CurrentState)
+            //}
+            //// Start the background task if it wasn't running
+            //else if (!IsMyBackgroundTaskRunning || MediaPlayerState.Closed == CurrentPlayer.CurrentState)
+            //{
+            //    try
+            //    {
+            //        // First update the persisted start track
+            //        ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.TrackId, songs[0].MediaUri.ToString());
+            //        ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.Position, new TimeSpan().ToString());
+
+            //        // Start task
+            //        StartBackgroundAudioTask();
+            //    }
+            //    catch { }
+
+
+            //}
+            //if (MediaPlayerState.Paused == CurrentPlayer.CurrentState)
+            //{
+            //    CurrentPlayer.Play();
+            //}
+
+            //if (MediaPlayerState.Playing == CurrentPlayer.CurrentState)
+            //{
+            //    CurrentPlayer.Pause();
+            //}
+
+            if (IsMyBackgroundTaskRunning)
             {
-                try
+                if (MediaPlayerState.Playing == CurrentPlayer.CurrentState)
                 {
-                    // First update the persisted start track
-                    ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.TrackId, songs[0].MediaUri.ToString());
-                    ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.Position, new TimeSpan().ToString());
-
-                    // Start task
+                    CurrentPlayer.Pause();
+                }
+                else if (MediaPlayerState.Paused == CurrentPlayer.CurrentState)
+                {
+                    CurrentPlayer.Play();
+                }
+                else if (MediaPlayerState.Closed == CurrentPlayer.CurrentState)
+                {
                     StartBackgroundAudioTask();
                 }
-                catch { }
-    
-                
             }
-            if (MediaPlayerState.Paused == CurrentPlayer.CurrentState)
+            else
             {
-                CurrentPlayer.Play();
-            }
-
-            if (MediaPlayerState.Playing == CurrentPlayer.CurrentState)
-            {
-                CurrentPlayer.Pause();
+                StartBackgroundAudioTask();
             }
         }
 
@@ -528,39 +527,6 @@ namespace MusicFlow
             }
         }
 
-        //private void Pause_Click(object sender, ItemClickEventArgs e)
-        //{
-        //    var random = new Random();
-        //    var s1 = myMusic.songList[random.Next(0,myMusic.songList.Count())];
-        //    var song1 = new SongModel();
-        //    song1.Title = s1.Title;
-        //    song1.MediaUri = new Uri(s1.SongFile);
-        //    song1.AlbumArtUri = new Uri(s1.AlbumCover);
-        //    Songs.Add(song1);
-           
-
-        //    // Start the background task if it wasn't running
-        //    if (!IsMyBackgroundTaskRunning || MediaPlayerState.Closed == CurrentPlayer.CurrentState)
-        //    {
-        //        // First update the persisted start track
-        //        ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.TrackId, song1.MediaUri.ToString());
-        //        ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.Position, new TimeSpan().ToString());
-
-        //        // Start task
-        //        StartBackgroundAudioTask();
-        //    }
-        //    else
-        //    {
-        //        // Switch to the selected track
-        //        MessageService.SendMessageToBackground(new TrackChangedMessage(song1.MediaUri));
-        //    }
-
-        //    if (MediaPlayerState.Paused == CurrentPlayer.CurrentState)
-        //    {
-        //        CurrentPlayer.Play();
-        //    }
-        //}
-
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("Play button pressed from App");
@@ -681,6 +647,17 @@ namespace MusicFlow
         {
             MessageService.SendMessageToBackground(new SkipPreviousMessage());
            
+        }       
+
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(NowPlaying));
+            HidePlayer.Begin();
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

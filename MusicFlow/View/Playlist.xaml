@@ -1,0 +1,29 @@
+﻿<UserControl
+    x:Class="MusicFlow.View.Playlist"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicFlow.View"
+    xmlns:data="using:MusicFlow"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <ScrollViewer>
+            <ListView ItemsSource="{x:Bind Songs}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Song">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="TB1" Text="{x:Bind Title,Mode=OneTime}" />
+                                <TextBlock Name="TB2" Text="{x:Bind Artist,Mode=OneTime}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

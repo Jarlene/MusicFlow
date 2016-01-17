@@ -39,7 +39,7 @@ namespace MusicFlow
         string AlbumArtist;
         string Year;
         string Genre;
-        Lumia.Imaging.Artistic.GrayscaleNegativeEffect ef = new GrayscaleNegativeEffect( );
+       
 
         public AlbumDetail()
         {
@@ -51,12 +51,8 @@ namespace MusicFlow
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
-
-
             songs = (ObservableCollection<Song>)e.Parameter; ;
             Cover = songs[0].AlbumCover;
-            
             AlbumArtist = songs[0].AlbumArtist;
             Year = songs[0].Year;
             Genre = songs[0].Genre;
