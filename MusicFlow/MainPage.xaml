@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MusicFlow"
     xmlns:c="using:MusicFlow"
+    xmlns:bga="using:BackgroundAudioShared"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -64,10 +65,26 @@
         </VisualStateManager.VisualStateGroups>
 
         <ContentControl Content="{Binding MediaElementObject}"/>
+
+        <Frame Name="BackgroundFrame" />
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="1">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="633,731" StartPoint="683,-124" Opacity="1" SpreadMethod="Reflect" MappingMode="Absolute">
+                    <LinearGradientBrush.Transform>
+                        <CompositeTransform TranslateX="-37" ScaleX="1.9" ScaleY="2.3"/>
+                    </LinearGradientBrush.Transform>
+                    <LinearGradientBrush.RelativeTransform>
+                        <CompositeTransform CenterY="0.5" CenterX="0.5" TranslateY="-1" ScaleX="0.75" ScaleY="0.95" SkewX="47" SkewY="7"/>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="Transparent" Offset="0.03"/>
+                    <GradientStop Color="#FF132DB3" Offset="0.55"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
         <Frame Name="MainFrame" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" />
 
         <ProgressBar Name="ProgressbarMain" IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="10" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" Background="Transparent" />
-
 
         <Grid Visibility="Visible" Height="112" Margin="0,0,0,-40" Name="PlayerSP"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5"  >
             <Grid.ColumnDefinitions>
@@ -86,9 +103,49 @@
             </Grid.RenderTransform>
 
             <Rectangle Fill="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2" Grid.ColumnSpan="5" Opacity=".9"/>
-            
+
             <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                <AppBarButton Icon="ShowBcc" Click="AppBarButton_Click" ToolTipService.ToolTip="Playlist"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <AppBarButton Icon="ShowBcc" Click="AppBarButton_Click" ToolTipService.ToolTip="Playlist"  Height="50" Width="50"  HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <AppBarButton.Flyout>
+                        <Flyout >
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <Grid Height="400" Width="320" Margin="-8" Background="Transparent">
+                                <Rectangle Fill="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity=".9"/>
+
+                                <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                                    <ListView ItemsSource="{x:Bind songs}" SelectionMode="None">
+                                        <ListView.Header>
+                                            <TextBlock Text="Now playing" FontSize="24" HorizontalAlignment="Left" Margin="12,12,0,12"/>
+                                        </ListView.Header>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="bga:SongModel">
+                                                <Grid Height="40" HorizontalAlignment="Center" Margin="-12" >
+                                                    <Grid.Transitions>
+                                                        <TransitionCollection>
+                                                            <EntranceThemeTransition IsStaggeringEnabled="True" FromHorizontalOffset="28" FromVerticalOffset="0"/>
+                                                        </TransitionCollection>
+                                                    </Grid.Transitions>
+                                                    <RelativePanel  Width="320" Background="Transparent">
+                                                        <TextBlock Name="TB2" Text="{x:Bind Title}" MaxWidth="200" RelativePanel.AlignLeftWithPanel="True" Margin="8,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True" ToolTipService.ToolTip="{x:Bind Title}"/>
+                                                        <TextBlock Name="TB3" Text="{x:Bind Artist}" MaxWidth="100" RelativePanel.AlignRightWithPanel="True" Margin="8,0,16,0" RelativePanel.AlignVerticalCenterWithPanel="True" ToolTipService.ToolTip="{x:Bind Artist}"/>
+                                                    </RelativePanel>
+                                                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="1" Fill="{ThemeResource SystemControlBackgroundAccentBrush}"/>
+
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </ScrollViewer>
+
+                            </Grid>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
             </StackPanel>
             <Grid Name="ProgressBarGrid" Grid.Column="3" HorizontalAlignment="Stretch" Margin="20,0,20,0">
                 <ProgressBar x:Name="progressBar" Value="{Binding Position.TotalMilliseconds, ElementName=CurrentPlayer, Mode=TwoWay}" Maximum="{Binding NaturalDuration.TotalMilliseconds, ElementName=CurrentPlayer, Mode=OneWay}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" Background="#99FFFFFF"/>

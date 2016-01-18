@@ -72,7 +72,7 @@ namespace NowPlayingClasses
                 _layoutManager.GetFarNeighbor,
                 _transitionLibrary.CreateFarSlideTransition,
                 TransitionOptions.Select,
-                TransitionDesaturationMode.ColorFlashlight);
+                TransitionDesaturationMode.Regular);
 
             ZoomEntry = new TransitionEntry(
                 TransitionKind.Zoom,

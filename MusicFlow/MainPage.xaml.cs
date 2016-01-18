@@ -193,6 +193,7 @@ namespace MusicFlow
             }
             ProgressbarMain.ShowPaused = true;
             MainFrame.Navigate(typeof(AlbumView), myMusic);
+            BackgroundFrame.Navigate(typeof(NowPlaying));
 
 
             var MediaElementObject = new MediaElement();
@@ -658,6 +659,15 @@ namespace MusicFlow
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            var sc = sender as ScrollViewer;
+            if (sc.VerticalScrollBarVisibility == ScrollBarVisibility.Visible)
+            {
+
+            }
         }
     }
 }

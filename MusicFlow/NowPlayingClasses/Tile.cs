@@ -313,7 +313,7 @@ namespace NowPlayingClasses
 
                     var frameSize = _frame.Size;
                     _content.Offset = new Vector3(_border, _border, 0.0f);
-                    _content.Size = new Vector2(frameSize.X - (2 * _border), frameSize.Y - (2 * _border));
+                    _content.Size = new Vector2(frameSize.X, frameSize.Y);
 
                     _frame.Children.InsertAtTop(_content);
                 }

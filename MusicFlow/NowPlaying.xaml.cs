@@ -134,7 +134,7 @@ namespace MusicFlow
 
         private void FlashlightCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            _transitionController.IsFlashlightEnabled = FlashlightCheckBox.IsChecked == true;
+            _transitionController.IsFlashlightEnabled = FlashlightCheckBox.IsChecked == false;
         }
 
         private void ZoomCheckBox_Click(object sender, RoutedEventArgs e)
